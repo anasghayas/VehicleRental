@@ -39,3 +39,28 @@ exports.addVehicle = async (req, res) => {
     res.status(500).json({ message: "Server error while adding vehicle." });
   }
 };
+
+// GET /api/vehicles
+// Public access - anyone can browse approved cars!
+exports.getAllVehicles = async (req, res) => {
+  try {
+    let query = { isAdminApproved: true };
+
+    if (req.query.location) {
+      query.location = { $regex: req.query.location, $options: 'i' };
+    }
+    if (req.query.type) {
+      query.type = req.query.type;
+    }
+    if (req.query.brand) {
+      query.brand = { $regex: req.query.brand, $options: 'i' };
+    }
+
+    const vehicles = await Vehicle.find(query).populate('agencyId', 'name email agencyName');
+
+    res.status(200).json(vehicles);
+  } catch (error) {
+    console.error("Error fetching vehicles:", error);
+    res.status(500).json({ message: "Server error while fetching vehicles." });
+  }
+};
