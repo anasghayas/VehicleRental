@@ -9,7 +9,7 @@ import { useAuth } from '../context/AuthContext';
 
 export default function Login() {
   const navigate = useNavigate();
-  const { login } = useAuth(); // Grab the login function from our context
+  const { login } = useAuth(); 
 
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [error, setError] = useState('');
