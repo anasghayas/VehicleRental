@@ -10,6 +10,7 @@ router.use(auth, role(['admin']));
 
 router.get('/users', adminController.getAllUsers);
 router.put('/users/:id/approve', adminController.approveAgency);
+router.get('/vehicles', adminController.getAllVehicles);
 router.put('/vehicles/:id/approve', adminController.approveVehicle);
 router.get('/bookings', adminController.getAllBookings);
 router.get('/analytics', adminController.getAnalytics);

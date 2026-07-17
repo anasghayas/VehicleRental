@@ -65,6 +65,21 @@ exports.approveVehicle = async (req, res) => {
   }
 };
 
+// GET /api/admin/vehicles
+// Private (Admin only) - Get all vehicles
+exports.getAllVehicles = async (req, res) => {
+  try {
+    const vehicles = await Vehicle.find()
+      .populate('agencyId', 'agencyName email phone')
+      .sort({ createdAt: -1 });
+
+    res.status(200).json(vehicles);
+  } catch (error) {
+    console.error("Fetch all vehicles error:", error);
+    res.status(500).json({ message: "Server error while fetching vehicles." });
+  }
+};
+
 // GET /api/admin/bookings
 
 exports.getAllBookings = async (req, res) => {
