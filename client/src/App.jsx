@@ -7,6 +7,7 @@ import AddVehicle from './pages/AddVehicle';
 import MyFleet from './pages/MyFleet';
 import VehicleDetails from './pages/VehicleDetails';
 import MyRentals from './pages/MyRentals';
+import AgencyBookings from './pages/AgencyBookings';
 import Navbar from './components/Navbar';
 import ProtectedRoute from './components/ProtectedRoute';
 
@@ -60,6 +61,17 @@ function App() {
             </ProtectedRoute>
           } 
         />
+
+        {/* Agency Only Route: Manage Bookings */}
+        <Route 
+          path="/agency/bookings" 
+          element={
+            <ProtectedRoute allowedRoles={['agency']}>
+              <AgencyBookings />
+            </ProtectedRoute>
+          } 
+        />
+        
       </Routes>
     </Router>
   );
