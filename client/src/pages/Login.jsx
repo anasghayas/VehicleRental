@@ -5,9 +5,11 @@ import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Link, useNavigate } from 'react-router-dom';
 import api from '../utils/api';
+import { useAuth } from '../context/AuthContext';
 
 export default function Login() {
   const navigate = useNavigate();
+  const { login } = useAuth(); // Grab the login function from our context
 
   const [formData, setFormData] = useState({ email: '', password: '' });
   const [error, setError] = useState('');
@@ -26,7 +28,8 @@ export default function Login() {
 
       const response = await api.post('/auth/login', formData);
       
-      localStorage.setItem('token', response.data.token);
+      // Use our global login function instead of direct localStorage!
+      login(response.data.token);
       
       navigate('/dashboard');
     } catch (err) {
