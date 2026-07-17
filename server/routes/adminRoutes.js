@@ -10,5 +10,6 @@ router.use(auth, role(['admin']));
 
 router.get('/users', adminController.getAllUsers);
 router.put('/users/:id/approve', adminController.approveAgency);
+router.put('/vehicles/:id/approve', adminController.approveVehicle);
 
 module.exports = router;

@@ -1,4 +1,5 @@
 const User = require('../models/User');
+const Vehicle = require('../models/Vehicle');
 
 // GET /api/admin/users
 
@@ -41,5 +42,24 @@ exports.approveAgency = async (req, res) => {
   } catch (error) {
     console.error("Approve agency error:", error);
     res.status(500).json({ message: "Server error while approving agency." });
+  }
+};
+
+// PUT /api/admin/vehicles/:id/approve
+
+exports.approveVehicle = async (req, res) => {
+  try {
+    const vehicle = await Vehicle.findById(req.params.id);
+    if (!vehicle) {
+      return res.status(404).json({ message: "Vehicle not found." });
+    }
+
+    vehicle.isAdminApproved = true;
+    await vehicle.save();
+
+    res.status(200).json({ message: "Vehicle approved successfully.", vehicle });
+  } catch (error) {
+    console.error("Approve vehicle error:", error);
+    res.status(500).json({ message: "Server error while approving vehicle." });
   }
 };
