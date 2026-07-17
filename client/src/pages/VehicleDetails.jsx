@@ -1,13 +1,24 @@
 import React, { useEffect, useState } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import api from '../utils/api';
 import { Button } from '../components/ui/button';
+import { Input } from '../components/ui/input';
+import { Label } from '../components/ui/label';
 
 export default function VehicleDetails() {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [vehicle, setVehicle] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+
+  // Booking Modal State
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+  const [totalPrice, setTotalPrice] = useState(0);
+  const [bookingLoading, setBookingLoading] = useState(false);
+  const [bookingError, setBookingError] = useState('');
 
   useEffect(() => {
     const fetchVehicle = async () => {
@@ -20,16 +31,60 @@ export default function VehicleDetails() {
         setLoading(false);
       }
     };
-
     fetchVehicle();
   }, [id]);
+
+  // Dynamically calculate the total price based on selected dates
+  useEffect(() => {
+    if (startDate && endDate && vehicle) {
+      const start = new Date(startDate);
+      const end = new Date(endDate);
+      const diffTime = end - start;
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+      
+      // Minimum 1 day rental
+      const days = diffDays > 0 ? diffDays : 1;
+      setTotalPrice(days * vehicle.pricePerDay);
+    } else {
+      setTotalPrice(0);
+    }
+  }, [startDate, endDate, vehicle]);
+
+  const handleBookingSubmit = async (e) => {
+    e.preventDefault();
+    setBookingLoading(true);
+    setBookingError('');
+
+    if (new Date(endDate) < new Date(startDate)) {
+      setBookingError("End date cannot be before start date!");
+      setBookingLoading(false);
+      return;
+    }
+
+    try {
+      await api.post('/api/bookings', {
+        vehicleId: vehicle._id,
+        startDate,
+        endDate,
+        totalPrice
+      });
+      alert('Booking requested successfully! Waiting for Agency approval.');
+      setIsModalOpen(false);
+      navigate('/dashboard'); 
+    } catch (err) {
+
+      setBookingError(err.response?.data?.message || 'Failed to create booking. Please make sure you are logged in as a Customer.');
+    } finally {
+      setBookingLoading(false);
+    }
+  };
 
   if (loading) return <div className="text-center py-20 text-xl font-medium text-gray-500">Loading details...</div>;
   if (error) return <div className="text-center py-20 text-xl font-medium text-red-500 bg-red-50 mx-6 mt-10 rounded-xl">{error}</div>;
   if (!vehicle) return <div className="text-center py-20 text-xl font-medium text-gray-500">Vehicle not found</div>;
 
   return (
-    <div className="max-w-6xl mx-auto px-6 py-12">
+    <div className="max-w-6xl mx-auto px-6 py-12 relative">
       <Link to="/" className="text-primary font-bold mb-8 inline-block hover:underline bg-blue-50 px-4 py-2 rounded-lg">
         &larr; Back to browsing
       </Link>
@@ -72,7 +127,6 @@ export default function VehicleDetails() {
                 <p className="text-lg font-bold text-gray-900">{vehicle.transmission}</p>
               </div>
               
-              {/* Agency Information Card */}
               <div className="col-span-2 bg-blue-50/50 p-5 rounded-2xl border border-blue-100 flex flex-col">
                 <p className="text-xs text-blue-600 uppercase font-bold tracking-widest mb-2">Verified Agency</p>
                 <p className="text-xl font-bold text-blue-950">{vehicle.agencyId?.agencyName || 'Independent Agency'}</p>
@@ -101,7 +155,10 @@ export default function VehicleDetails() {
               </div>
             </div>
 
-            <Button className="w-full h-16 text-xl font-bold shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all bg-primary hover:bg-primary/90 text-primary-foreground rounded-2xl">
+            <Button 
+              onClick={() => setIsModalOpen(true)}
+              className="w-full h-16 text-xl font-bold shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all bg-primary hover:bg-primary/90 text-primary-foreground rounded-2xl"
+            >
               Proceed to Book
             </Button>
             <p className="text-center text-sm text-gray-400 mt-4 font-medium flex items-center justify-center gap-1">
@@ -110,6 +167,74 @@ export default function VehicleDetails() {
           </div>
         </div>
       </div>
+
+      {/* Booking Modal Overlay */}
+      {isModalOpen && (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl p-8 max-w-md w-full shadow-2xl relative">
+            
+            <button 
+              onClick={() => setIsModalOpen(false)}
+              className="absolute top-4 right-4 text-gray-400 hover:text-gray-900 text-2xl font-bold"
+            >
+              &times;
+            </button>
+            
+            <h2 className="text-2xl font-bold text-gray-900 mb-6">Complete Your Booking</h2>
+            
+            {bookingError && (
+              <div className="mb-6 p-4 bg-red-50 text-red-600 rounded-xl text-sm font-medium border border-red-100">
+                {bookingError}
+              </div>
+            )}
+
+            <form onSubmit={handleBookingSubmit} className="space-y-6">
+              <div className="space-y-2">
+                <Label htmlFor="startDate" className="font-bold">Start Date</Label>
+                <Input 
+                  type="date" 
+                  id="startDate" 
+                  required 
+                  value={startDate}
+                  min={new Date().toISOString().split('T')[0]} // Prevents selecting past dates
+                  onChange={(e) => setStartDate(e.target.value)} 
+                  className="h-12"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="endDate" className="font-bold">End Date</Label>
+                <Input 
+                  type="date" 
+                  id="endDate" 
+                  required 
+                  value={endDate}
+                  min={startDate || new Date().toISOString().split('T')[0]} 
+                  onChange={(e) => setEndDate(e.target.value)} 
+                  className="h-12"
+                />
+              </div>
+
+              <div className="bg-gray-50 p-4 rounded-xl border border-gray-200">
+                <div className="flex justify-between items-center mb-2">
+                  <span className="text-gray-600 font-medium">Rate:</span>
+                  <span className="font-bold">₹{vehicle.pricePerDay} / day</span>
+                </div>
+                <div className="flex justify-between items-center text-xl">
+                  <span className="text-gray-900 font-bold">Total Price:</span>
+                  <span className="font-bold text-primary">₹{totalPrice}</span>
+                </div>
+              </div>
+
+              <Button type="submit" className="w-full h-14 text-lg font-bold rounded-xl" disabled={bookingLoading}>
+                {bookingLoading ? 'Processing Request...' : 'Confirm Request'}
+              </Button>
+            </form>
+
+          </div>
+        </div>
+      )}
+
     </div>
   );
 }
