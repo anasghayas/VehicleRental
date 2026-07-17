@@ -20,6 +20,11 @@ exports.addVehicle = async (req, res) => {
       agencyId: req.user.id
     };
 
+    // If a photo was uploaded, Cloudinary processed it and gave us a secure URL!
+    if (req.file) {
+      vehicleData.imageUrl = req.file.path;
+    }
+
     // 4. Save to database
     const newVehicle = new Vehicle(vehicleData);
     await newVehicle.save();
@@ -102,9 +107,17 @@ exports.updateVehicle = async (req, res) => {
     if (vehicle.agencyId.toString() !== req.user.id) {
       return res.status(403).json({ message: "You do not have permission to edit this vehicle." });
     }
+
+    const updatedData = { ...req.body };
+    
+    // If they uploaded a new photo, update the image URL!
+    if (req.file) {
+      updatedData.imageUrl = req.file.path;
+    }
+
     const updatedVehicle = await Vehicle.findByIdAndUpdate(
       req.params.id,
-      { $set: req.body },
+      { $set: updatedData },
       { new: true, runValidators: true } 
     );
 
