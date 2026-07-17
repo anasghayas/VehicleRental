@@ -11,6 +11,7 @@ import AgencyBookings from './pages/AgencyBookings';
 import AdminDashboard from './pages/AdminDashboard';
 import AdminManageUsers from './pages/AdminManageUsers';
 import AdminManageVehicles from './pages/AdminManageVehicles';
+import AdminAllBookings from './pages/AdminAllBookings';
 import Navbar from './components/Navbar';
 import ProtectedRoute from './components/ProtectedRoute';
 
@@ -101,6 +102,16 @@ function App() {
           element={
             <ProtectedRoute allowedRoles={['admin']}>
               <AdminManageVehicles />
+            </ProtectedRoute>
+          } 
+        />
+
+        {/* Admin Only Route: All Bookings */}
+        <Route 
+          path="/admin/bookings" 
+          element={
+            <ProtectedRoute allowedRoles={['admin']}>
+              <AdminAllBookings />
             </ProtectedRoute>
           } 
         />
