@@ -12,5 +12,6 @@ router.get('/users', adminController.getAllUsers);
 router.put('/users/:id/approve', adminController.approveAgency);
 router.put('/vehicles/:id/approve', adminController.approveVehicle);
 router.get('/bookings', adminController.getAllBookings);
+router.get('/analytics', adminController.getAnalytics);
 
 module.exports = router;

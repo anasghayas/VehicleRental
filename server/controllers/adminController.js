@@ -81,3 +81,29 @@ exports.getAllBookings = async (req, res) => {
     res.status(500).json({ message: "Server error while fetching bookings." });
   }
 };
+
+// GET /api/admin/analytics
+
+exports.getAnalytics = async (req, res) => {
+  try {
+    const totalCustomers = await User.countDocuments({ role: 'customer' });
+    const totalAgencies = await User.countDocuments({ role: 'agency' });
+    const totalVehicles = await Vehicle.countDocuments();
+    const totalBookings = await Booking.countDocuments();
+
+    // Calculate total revenue from 'completed' bookings
+    const completedBookings = await Booking.find({ status: 'completed' });
+    const totalRevenue = completedBookings.reduce((sum, booking) => sum + booking.totalPrice, 0);
+
+    res.status(200).json({
+      customers: totalCustomers,
+      agencies: totalAgencies,
+      vehicles: totalVehicles,
+      bookings: totalBookings,
+      revenue: totalRevenue
+    });
+  } catch (error) {
+    console.error("Analytics error:", error);
+    res.status(500).json({ message: "Server error while fetching analytics." });
+  }
+};
