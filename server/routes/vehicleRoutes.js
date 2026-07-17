@@ -8,6 +8,7 @@ const { upload } = require('../config/cloudinary');
 
 router.post('/', auth, role(['agency']), upload.single('image'), vehicleController.addVehicle);
 router.get('/', vehicleController.getAllVehicles);
+router.get('/my-fleet', auth, role(['agency']), vehicleController.getMyVehicles);
 router.get('/:id', vehicleController.getVehicleById);
 router.put('/:id', auth, role(['agency']), upload.single('image'), vehicleController.updateVehicle);
 router.delete('/:id', auth, role(['agency']), vehicleController.deleteVehicle);

@@ -70,6 +70,19 @@ exports.getAllVehicles = async (req, res) => {
   }
 };
 
+// GET /api/vehicles/my-fleet
+// Private access - Agency fetches all of their own vehicles (even unapproved ones)
+exports.getMyVehicles = async (req, res) => {
+  try {
+    // Find vehicles where the agencyId matches the logged-in user's ID
+    const vehicles = await Vehicle.find({ agencyId: req.user.id }).sort({ createdAt: -1 });
+    res.status(200).json(vehicles);
+  } catch (error) {
+    console.error("Error fetching my vehicles:", error);
+    res.status(500).json({ message: "Server error while fetching your fleet." });
+  }
+};
+
 // GET /api/vehicles/:id
 // Public access - view details of one specific vehicle
 exports.getVehicleById = async (req, res) => {

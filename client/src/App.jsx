@@ -4,6 +4,7 @@ import Login from './pages/Login';
 import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import AddVehicle from './pages/AddVehicle';
+import MyFleet from './pages/MyFleet';
 import Navbar from './components/Navbar';
 import ProtectedRoute from './components/ProtectedRoute';
 
@@ -33,6 +34,16 @@ function App() {
           element={
             <ProtectedRoute allowedRoles={['agency']}>
               <AddVehicle />
+            </ProtectedRoute>
+          } 
+        />
+
+        {/* Agency Only Route: My Fleet */}
+        <Route 
+          path="/agency/fleet" 
+          element={
+            <ProtectedRoute allowedRoles={['agency']}>
+              <MyFleet />
             </ProtectedRoute>
           } 
         />
