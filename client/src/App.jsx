@@ -6,6 +6,7 @@ import Dashboard from './pages/Dashboard';
 import AddVehicle from './pages/AddVehicle';
 import MyFleet from './pages/MyFleet';
 import VehicleDetails from './pages/VehicleDetails';
+import MyRentals from './pages/MyRentals';
 import Navbar from './components/Navbar';
 import ProtectedRoute from './components/ProtectedRoute';
 
@@ -26,6 +27,16 @@ function App() {
           element={
             <ProtectedRoute>
               <Dashboard />
+            </ProtectedRoute>
+          } 
+        />
+
+        {/* Customer Only Route: My Rentals */}
+        <Route 
+          path="/customer/rentals" 
+          element={
+            <ProtectedRoute allowedRoles={['customer']}>
+              <MyRentals />
             </ProtectedRoute>
           } 
         />
