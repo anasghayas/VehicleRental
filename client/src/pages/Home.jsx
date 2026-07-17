@@ -17,7 +17,7 @@ export default function Home() {
     const fetchVehicles = async () => {
       try {
         setLoading(true);
-        let query = '/api/vehicles?';
+        let query = '/vehicles?';
         if (locationFilter) query += `location=${locationFilter}&`;
         if (typeFilter) query += `type=${typeFilter}`;
 

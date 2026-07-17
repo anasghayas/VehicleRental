@@ -1,8 +1,8 @@
 import axios from 'axios';
 
-// We create an 'axios instance' so we don't have to type http://localhost:5000/api every single time!
+// We create an 'axios instance' and use a relative path so it works in any environment (like remote workspaces)
 const api = axios.create({
-  baseURL: 'http://localhost:5000/api',
+  baseURL: '/api',
 });
 
 // Later in Phase 3, we will add a special interceptor here 

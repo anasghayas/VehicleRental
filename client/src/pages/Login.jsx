@@ -29,10 +29,12 @@ export default function Login() {
 
     try {
       const response = await api.post('/auth/login', formData);
-      login(response.data.user, response.data.token);
+      login(response.data.token);
       toast.success('Welcome back!');
       navigate('/dashboard');
     } catch (err) {
+      console.error("LOGIN ERROR FULL:", err);
+      console.error("LOGIN ERROR RESPONSE:", err.response);
       toast.error(err.response?.data?.message || 'Login failed');
     } finally {
       setLoading(false);

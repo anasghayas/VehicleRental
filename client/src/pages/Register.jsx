@@ -42,7 +42,9 @@ export default function Register() {
         role
       });
       
-      login(response.data.user, response.data.token);
+      if (response.data.token) {
+        login(response.data.token);
+      }
       toast.success("Registration Successful!");
       navigate('/dashboard');
     } catch (err) {
