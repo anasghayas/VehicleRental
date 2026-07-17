@@ -9,5 +9,6 @@ router.use(auth, role(['admin']));
 
 
 router.get('/users', adminController.getAllUsers);
+router.put('/users/:id/approve', adminController.approveAgency);
 
 module.exports = router;
