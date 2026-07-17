@@ -5,6 +5,7 @@ import Register from './pages/Register';
 import Dashboard from './pages/Dashboard';
 import AddVehicle from './pages/AddVehicle';
 import MyFleet from './pages/MyFleet';
+import VehicleDetails from './pages/VehicleDetails';
 import Navbar from './components/Navbar';
 import ProtectedRoute from './components/ProtectedRoute';
 
@@ -17,6 +18,7 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/vehicle/:id" element={<VehicleDetails />} />
         
         {/* Protected Dashboard Route */}
         <Route 
