@@ -50,3 +50,19 @@ exports.getMyBookings = async (req, res) => {
     res.status(500).json({ message: "Server error while fetching your bookings." });
   }
 };
+
+// GET /api/bookings/agency
+// Private (Agency only) - Fetch all bookings made for vehicles owned by this agency
+exports.getAgencyBookings = async (req, res) => {
+  try {
+    const bookings = await Booking.find({ agencyId: req.user.id })
+      .populate('vehicleId', 'name brand type imageUrl')
+      .populate('customerId', 'name email phone') // We need to see who rented it!
+      .sort({ createdAt: -1 });
+
+    res.status(200).json(bookings);
+  } catch (error) {
+    console.error("Fetch agency bookings error:", error);
+    res.status(500).json({ message: "Server error while fetching agency bookings." });
+  }
+};
