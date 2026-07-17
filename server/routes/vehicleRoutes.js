@@ -7,5 +7,6 @@ const role = require('../middleware/role');
 
 router.post('/', auth, role(['agency']), vehicleController.addVehicle);
 router.get('/', vehicleController.getAllVehicles);
+router.get('/:id', vehicleController.getVehicleById);
 
 module.exports = router;

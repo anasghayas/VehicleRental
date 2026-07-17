@@ -64,3 +64,26 @@ exports.getAllVehicles = async (req, res) => {
     res.status(500).json({ message: "Server error while fetching vehicles." });
   }
 };
+
+// GET /api/vehicles/:id
+// Public access - view details of one specific vehicle
+exports.getVehicleById = async (req, res) => {
+  try {
+    const vehicle = await Vehicle.findById(req.params.id).populate('agencyId', 'name email agencyName phone');
+    
+    if (!vehicle) {
+      return res.status(404).json({ message: "Vehicle not found." });
+    }
+
+    res.status(200).json(vehicle);
+  } catch (error) {
+    console.error("Error fetching vehicle:", error);
+    
+    // If the ID isn't a valid MongoDB ObjectId format
+    if (error.kind === 'ObjectId') {
+      return res.status(400).json({ message: "Invalid vehicle ID format." });
+    }
+    
+    res.status(500).json({ message: "Server error while fetching vehicle." });
+  }
+};
