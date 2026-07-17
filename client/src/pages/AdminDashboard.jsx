@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import api from '../utils/api';
+import LoadingSpinner from '../components/LoadingSpinner';
 
 export default function AdminDashboard() {
   const [stats, setStats] = useState(null);
@@ -10,7 +11,7 @@ export default function AdminDashboard() {
   useEffect(() => {
     const fetchAnalytics = async () => {
       try {
-        const response = await api.get('/api/admin/analytics');
+        const response = await api.get('/admin/analytics');
         setStats(response.data);
       } catch (err) {
         setError('Failed to load admin analytics');
@@ -23,7 +24,7 @@ export default function AdminDashboard() {
     fetchAnalytics();
   }, []);
 
-  if (loading) return <div className="text-center mt-20 text-gray-500 font-medium">Loading analytics...</div>;
+  if (loading) return <LoadingSpinner text="Loading analytics..." fullScreen />;
   if (error) return <div className="text-center text-red-500 mt-20 bg-red-50 p-4 rounded-lg inline-block">{error}</div>;
 
   return (

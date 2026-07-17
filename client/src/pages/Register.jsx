@@ -6,9 +6,12 @@ import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Link, useNavigate } from 'react-router-dom';
 import api from '../utils/api';
+import { useAuth } from '../context/AuthContext';
+import { toast } from 'sonner';
 
 export default function Register() {
   const navigate = useNavigate();
+  const { login } = useAuth();
   
   const [formData, setFormData] = useState({
     name: '',
@@ -32,18 +35,17 @@ export default function Register() {
     setLoading(true);
 
     try {
-      
       const response = await api.post('/auth/register', {
         ...formData,
         role
       });
       
-      
-      alert("Registration Successful! Please log in.");
-      navigate('/login');
+      login(response.data.user, response.data.token);
+      toast.success("Registration Successful!");
+      navigate('/dashboard');
     } catch (err) {
-      
       setError(err.response?.data?.message || "Something went wrong. Please try again.");
+      toast.error(err.response?.data?.message || "Registration failed");
     } finally {
       setLoading(false);
     }

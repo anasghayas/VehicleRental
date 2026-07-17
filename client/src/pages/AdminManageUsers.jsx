@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import api from '../utils/api';
 import { Button } from '../components/ui/button';
+import LoadingSpinner from '../components/LoadingSpinner';
+import { toast } from 'sonner';
 
 export default function AdminManageUsers() {
   const [users, setUsers] = useState([]);
@@ -14,7 +16,7 @@ export default function AdminManageUsers() {
 
   const fetchUsers = async () => {
     try {
-      const response = await api.get('/api/admin/users');
+      const response = await api.get('/admin/users');
       setUsers(response.data);
     } catch (err) {
       setError('Failed to load users.');
@@ -27,19 +29,20 @@ export default function AdminManageUsers() {
   const handleApprove = async (userId) => {
     setActionLoading(userId);
     try {
-      await api.put(`/api/admin/users/${userId}/approve`);
+      await api.put(`/admin/users/${userId}/approve`);
       setUsers(users.map(u => 
         u._id === userId ? { ...u, isApproved: true } : u
       ));
+      toast.success("Agency approved successfully!");
     } catch (err) {
       console.error("Failed to approve agency", err);
-      alert("Error approving agency. See console.");
+      toast.error(err.response?.data?.message || "Error approving agency.");
     } finally {
       setActionLoading(null);
     }
   };
 
-  if (loading) return <div className="text-center mt-20 text-gray-500 font-medium">Loading users...</div>;
+  if (loading) return <LoadingSpinner text="Loading users..." fullScreen />;
   if (error) return <div className="text-center text-red-500 mt-20 bg-red-50 p-4 rounded-lg inline-block">{error}</div>;
 
   return (

@@ -4,6 +4,8 @@ import api from '../utils/api';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
+import { toast } from 'sonner';
+import LoadingSpinner from '../components/LoadingSpinner';
 
 export default function VehicleDetails() {
   const { id } = useParams();
@@ -23,7 +25,7 @@ export default function VehicleDetails() {
   useEffect(() => {
     const fetchVehicle = async () => {
       try {
-        const response = await api.get(`/api/vehicles/${id}`);
+        const response = await api.get(`/vehicles/${id}`);
         setVehicle(response.data);
       } catch (err) {
         setError(err.response?.data?.message || 'Failed to load vehicle details');
@@ -62,24 +64,24 @@ export default function VehicleDetails() {
     }
 
     try {
-      await api.post('/api/bookings', {
+      await api.post('/bookings', {
         vehicleId: vehicle._id,
         startDate,
         endDate,
         totalPrice
       });
-      alert('Booking requested successfully! Waiting for Agency approval.');
+      toast.success('Booking requested successfully! Waiting for Agency approval.');
       setIsModalOpen(false);
       navigate('/dashboard'); 
     } catch (err) {
-
+      toast.error(err.response?.data?.message || 'Failed to create booking.');
       setBookingError(err.response?.data?.message || 'Failed to create booking. Please make sure you are logged in as a Customer.');
     } finally {
       setBookingLoading(false);
     }
   };
 
-  if (loading) return <div className="text-center py-20 text-xl font-medium text-gray-500">Loading details...</div>;
+  if (loading) return <LoadingSpinner text="Loading vehicle details..." fullScreen />;
   if (error) return <div className="text-center py-20 text-xl font-medium text-red-500 bg-red-50 mx-6 mt-10 rounded-xl">{error}</div>;
   if (!vehicle) return <div className="text-center py-20 text-xl font-medium text-gray-500">Vehicle not found</div>;
 

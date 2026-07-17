@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import api from '../utils/api';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
+import LoadingSpinner from '../components/LoadingSpinner';
 
 export default function Home() {
   const [vehicles, setVehicles] = useState([]);
@@ -69,7 +70,9 @@ export default function Home() {
 
       {/* Vehicles Grid */}
       {loading ? (
-        <div className="text-center text-gray-500 py-20 text-xl font-medium">Loading vehicles...</div>
+        <div className="col-span-full">
+          <LoadingSpinner text="Loading amazing vehicles..." />
+        </div>
       ) : error ? (
         <div className="text-center text-red-500 py-20">{error}</div>
       ) : vehicles.length === 0 ? (

@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import api from '../utils/api';
 import { Button } from '../components/ui/button';
-import { SERVER_URL } from '../utils/constants';
+import LoadingSpinner from '../components/LoadingSpinner';
+import { toast } from 'sonner';
 
 export default function AdminManageVehicles() {
   const [vehicles, setVehicles] = useState([]);
@@ -15,7 +16,7 @@ export default function AdminManageVehicles() {
 
   const fetchVehicles = async () => {
     try {
-      const response = await api.get('/api/admin/vehicles');
+      const response = await api.get('/admin/vehicles');
       setVehicles(response.data);
     } catch (err) {
       setError('Failed to load vehicles.');
@@ -28,19 +29,20 @@ export default function AdminManageVehicles() {
   const handleApprove = async (vehicleId) => {
     setActionLoading(vehicleId);
     try {
-      await api.put(`/api/admin/vehicles/${vehicleId}/approve`);
+      await api.put(`/admin/vehicles/${vehicleId}/approve`);
       setVehicles(vehicles.map(v => 
         v._id === vehicleId ? { ...v, isAdminApproved: true } : v
       ));
+      toast.success("Vehicle approved successfully!");
     } catch (err) {
       console.error("Failed to approve vehicle", err);
-      alert("Error approving vehicle. See console.");
+      toast.error(err.response?.data?.message || "Error approving vehicle.");
     } finally {
       setActionLoading(null);
     }
   };
 
-  if (loading) return <div className="text-center mt-20 text-gray-500 font-medium">Loading vehicles...</div>;
+  if (loading) return <LoadingSpinner text="Loading vehicles..." fullScreen />;
   if (error) return <div className="text-center text-red-500 mt-20 bg-red-50 p-4 rounded-lg inline-block">{error}</div>;
 
   return (
@@ -65,7 +67,7 @@ export default function AdminManageVehicles() {
                   <td className="px-6 py-4">
                     {vehicle.imageUrl ? (
                       <img 
-                        src={vehicle.imageUrl.startsWith('http') ? vehicle.imageUrl : `${SERVER_URL}/${vehicle.imageUrl}`} 
+                        src={vehicle.imageUrl} 
                         alt={vehicle.name} 
                         className="w-20 h-14 object-cover rounded-md border border-gray-200"
                       />

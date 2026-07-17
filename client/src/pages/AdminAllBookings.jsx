@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import api from '../utils/api';
 import { format } from 'date-fns';
+import LoadingSpinner from '../components/LoadingSpinner';
 
 export default function AdminAllBookings() {
   const [bookings, setBookings] = useState([]);
@@ -13,7 +14,7 @@ export default function AdminAllBookings() {
 
   const fetchBookings = async () => {
     try {
-      const response = await api.get('/api/admin/bookings');
+      const response = await api.get('/admin/bookings');
       setBookings(response.data);
     } catch (err) {
       setError('Failed to load bookings.');
@@ -33,7 +34,7 @@ export default function AdminAllBookings() {
     }
   };
 
-  if (loading) return <div className="text-center mt-20 text-gray-500 font-medium">Loading platform bookings...</div>;
+  if (loading) return <LoadingSpinner text="Loading platform bookings..." fullScreen />;
   if (error) return <div className="text-center text-red-500 mt-20 bg-red-50 p-4 rounded-lg inline-block">{error}</div>;
 
   return (

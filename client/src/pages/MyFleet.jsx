@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import api from '../utils/api';
 import { Button } from '../components/ui/button';
+import { toast } from 'sonner';
+import LoadingSpinner from '../components/LoadingSpinner';
 
 export default function MyFleet() {
   const [vehicles, setVehicles] = useState([]);
@@ -14,7 +16,7 @@ export default function MyFleet() {
 
   const fetchMyVehicles = async () => {
     try {
-      const response = await api.get('/api/vehicles/my-fleet');
+      const response = await api.get('/vehicles/my-fleet');
       setVehicles(response.data);
     } catch (err) {
       setError('Failed to fetch your fleet.');
@@ -27,16 +29,17 @@ export default function MyFleet() {
   const handleDelete = async (id) => {
     if (window.confirm("Are you sure you want to completely delete this vehicle? This action cannot be undone.")) {
       try {
-        await api.delete(`/api/vehicles/${id}`);
-        // Remove the deleted car from the screen without needing a page refresh!
+        await api.delete(`/vehicles/${id}`);
         setVehicles(vehicles.filter((v) => v._id !== id));
+        toast.success("Vehicle deleted successfully!");
       } catch (err) {
-        alert(err.response?.data?.message || 'Failed to delete vehicle');
+        console.error(err);
+        toast.error(err.response?.data?.message || 'Failed to delete vehicle');
       }
     }
   };
 
-  if (loading) return <div className="text-center mt-20 text-gray-500 font-medium">Loading your fleet...</div>;
+  if (loading) return <LoadingSpinner text="Loading your fleet..." fullScreen />;
   if (error) return <div className="text-center text-red-500 mt-20 bg-red-50 p-4 rounded-lg inline-block">{error}</div>;
 
   return (

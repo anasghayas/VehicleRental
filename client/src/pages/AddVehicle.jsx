@@ -4,6 +4,7 @@ import api from '../utils/api';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
+import { toast } from 'sonner';
 
 export default function AddVehicle() {
   const navigate = useNavigate();
@@ -48,11 +49,12 @@ export default function AddVehicle() {
       if (image) {
         data.append('image', image);
       }
-      await api.post('/api/vehicles', data);
-      
+      await api.post('/vehicles', data);
+      toast.success("Vehicle listed successfully! Waiting for Admin approval.");
       navigate('/dashboard');
     } catch (err) {
       console.error(err);
+      toast.error(err.response?.data?.message || 'Failed to add vehicle');
       setError(err.response?.data?.message || 'Failed to add vehicle');
     } finally {
       setLoading(false);

@@ -6,6 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Link, useNavigate } from 'react-router-dom';
 import api from '../utils/api';
 import { useAuth } from '../context/AuthContext';
+import { toast } from 'sonner';
 
 export default function Login() {
   const navigate = useNavigate();
@@ -25,15 +26,12 @@ export default function Login() {
     setLoading(true);
 
     try {
-
       const response = await api.post('/auth/login', formData);
-      
-      // Use our global login function instead of direct localStorage!
-      login(response.data.token);
-      
+      login(response.data.user, response.data.token);
+      toast.success('Welcome back!');
       navigate('/dashboard');
     } catch (err) {
-      setError(err.response?.data?.message || "Invalid credentials. Please try again.");
+      toast.error(err.response?.data?.message || 'Login failed');
     } finally {
       setLoading(false);
     }

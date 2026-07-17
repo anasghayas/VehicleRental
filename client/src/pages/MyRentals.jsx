@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import api from '../utils/api';
 import { Button } from '../components/ui/button';
+import LoadingSpinner from '../components/LoadingSpinner';
 
 export default function MyRentals() {
   const [bookings, setBookings] = useState([]);
@@ -14,7 +15,7 @@ export default function MyRentals() {
 
   const fetchMyBookings = async () => {
     try {
-      const response = await api.get('/api/bookings/my-bookings');
+      const response = await api.get('/bookings/my-bookings');
       setBookings(response.data);
     } catch (err) {
       setError('Failed to load your rental history.');
@@ -34,7 +35,7 @@ export default function MyRentals() {
     }
   };
 
-  if (loading) return <div className="text-center mt-20 text-gray-500 font-medium">Loading your rentals...</div>;
+  if (loading) return <LoadingSpinner text="Loading your rentals..." fullScreen />;
   if (error) return <div className="text-center text-red-500 mt-20 bg-red-50 p-4 rounded-lg inline-block">{error}</div>;
 
   return (

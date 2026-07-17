@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import api from '../utils/api';
 import { Button } from '../components/ui/button';
+import { toast } from 'sonner';
+import LoadingSpinner from '../components/LoadingSpinner';
 
 export default function AgencyBookings() {
   const [bookings, setBookings] = useState([]);
@@ -14,7 +16,7 @@ export default function AgencyBookings() {
 
   const fetchBookings = async () => {
     try {
-      const response = await api.get('/api/bookings/agency');
+      const response = await api.get('/bookings/agency');
       setBookings(response.data);
     } catch (err) {
       setError('Failed to load agency bookings.');
@@ -27,13 +29,15 @@ export default function AgencyBookings() {
   const handleStatusUpdate = async (bookingId, newStatus) => {
     setActionLoading(bookingId);
     try {
-      const response = await api.put(`/api/bookings/${bookingId}/status`, { status: newStatus });
+      await api.put(`/bookings/${bookingId}/status`, { status: newStatus });
 
       setBookings((prevBookings) => 
-        prevBookings.map((b) => b._id === bookingId ? { ...b, status: response.data.booking.status } : b)
+        prevBookings.map((b) => b._id === bookingId ? { ...b, status: newStatus } : b)
       );
+      toast.success(`Booking ${newStatus} successfully`);
     } catch (err) {
-      alert(err.response?.data?.message || 'Failed to update status');
+      console.error(err);
+      toast.error(err.response?.data?.message || 'Failed to update status');
     } finally {
       setActionLoading(null);
     }

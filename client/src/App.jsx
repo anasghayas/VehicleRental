@@ -14,11 +14,13 @@ import AdminManageVehicles from './pages/AdminManageVehicles';
 import AdminAllBookings from './pages/AdminAllBookings';
 import Navbar from './components/Navbar';
 import ProtectedRoute from './components/ProtectedRoute';
+import { Toaster } from 'sonner';
 
 function App() {
   return (
     <Router>
       <Navbar />
+      <Toaster position="top-right" richColors />
       <Routes>
         {/* Define which component loads for which URL */}
         <Route path="/" element={<Home />} />
