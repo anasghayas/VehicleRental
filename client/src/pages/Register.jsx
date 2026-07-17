@@ -4,10 +4,50 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import api from '../utils/api';
 
 export default function Register() {
+  const navigate = useNavigate();
+  
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    password: '',
+    phone: '',
+    agencyName: ''
+  });
   const [role, setRole] = useState('customer');
+  
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.id]: e.target.value });
+  };
+
+ 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
+    setLoading(true);
+
+    try {
+      
+      const response = await api.post('/auth/register', {
+        ...formData,
+        role
+      });
+      
+      
+      alert("Registration Successful! Please log in.");
+      navigate('/login');
+    } catch (err) {
+      
+      setError(err.response?.data?.message || "Something went wrong. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="flex items-center justify-center min-h-[calc(100vh-4rem)] bg-gray-50 p-4">
@@ -19,26 +59,33 @@ export default function Register() {
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form className="space-y-4">
+          <form className="space-y-4" onSubmit={handleSubmit}>
             
+            {/* Show Error Message if any */}
+            {error && (
+              <div className="bg-red-50 text-red-600 p-3 rounded-md text-sm font-medium text-center border border-red-200">
+                {error}
+              </div>
+            )}
+
             <div className="space-y-2">
               <Label htmlFor="name">Full Name</Label>
-              <Input id="name" placeholder="John Doe" required />
+              <Input id="name" placeholder="John Doe" value={formData.name} onChange={handleChange} required />
             </div>
             
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
-              <Input id="email" type="email" placeholder="m@example.com" required />
+              <Input id="email" type="email" placeholder="m@example.com" value={formData.email} onChange={handleChange} required />
             </div>
 
             <div className="space-y-2">
               <Label htmlFor="password">Password</Label>
-              <Input id="password" type="password" required />
+              <Input id="password" type="password" value={formData.password} onChange={handleChange} required />
             </div>
 
             <div className="space-y-2">
               <Label htmlFor="phone">Phone Number</Label>
-              <Input id="phone" type="tel" placeholder="123-456-7890" required />
+              <Input id="phone" type="tel" placeholder="123-456-7890" value={formData.phone} onChange={handleChange} required />
             </div>
 
             <div className="space-y-2">
@@ -58,15 +105,15 @@ export default function Register() {
             {role === 'agency' && (
               <div className="space-y-2 border-t pt-4 mt-4 animate-in fade-in zoom-in duration-300">
                 <Label htmlFor="agencyName">Agency Business Name</Label>
-                <Input id="agencyName" placeholder="GoVroom Rentals Ltd." required />
+                <Input id="agencyName" placeholder="GoVroom Rentals Ltd." value={formData.agencyName} onChange={handleChange} required />
                 <p className="text-xs text-amber-600 bg-amber-50 p-2 rounded-md">
                   Note: Agencies require admin approval before listing vehicles.
                 </p>
               </div>
             )}
 
-            <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white shadow-md transition-all" type="submit">
-              Sign Up
+            <Button disabled={loading} className="w-full bg-blue-600 hover:bg-blue-700 text-white shadow-md transition-all" type="submit">
+              {loading ? "Signing up..." : "Sign Up"}
             </Button>
             
           </form>
