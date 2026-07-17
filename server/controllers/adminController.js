@@ -1,5 +1,6 @@
 const User = require('../models/User');
 const Vehicle = require('../models/Vehicle');
+const Booking = require('../models/Booking');
 
 // GET /api/admin/users
 
@@ -61,5 +62,22 @@ exports.approveVehicle = async (req, res) => {
   } catch (error) {
     console.error("Approve vehicle error:", error);
     res.status(500).json({ message: "Server error while approving vehicle." });
+  }
+};
+
+// GET /api/admin/bookings
+
+exports.getAllBookings = async (req, res) => {
+  try {
+    const bookings = await Booking.find()
+      .populate('vehicleId', 'name brand type vehicleNumber imageUrl')
+      .populate('customerId', 'name email phone')
+      .populate('agencyId', 'agencyName email phone')
+      .sort({ createdAt: -1 });
+
+    res.status(200).json(bookings);
+  } catch (error) {
+    console.error("Fetch all bookings error:", error);
+    res.status(500).json({ message: "Server error while fetching bookings." });
   }
 };
