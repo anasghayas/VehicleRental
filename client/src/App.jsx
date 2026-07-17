@@ -8,6 +8,7 @@ import MyFleet from './pages/MyFleet';
 import VehicleDetails from './pages/VehicleDetails';
 import MyRentals from './pages/MyRentals';
 import AgencyBookings from './pages/AgencyBookings';
+import AdminDashboard from './pages/AdminDashboard';
 import Navbar from './components/Navbar';
 import ProtectedRoute from './components/ProtectedRoute';
 
@@ -68,6 +69,16 @@ function App() {
           element={
             <ProtectedRoute allowedRoles={['agency']}>
               <AgencyBookings />
+            </ProtectedRoute>
+          } 
+        />
+
+        {/* Admin Only Route: Dashboard */}
+        <Route 
+          path="/admin/dashboard" 
+          element={
+            <ProtectedRoute allowedRoles={['admin']}>
+              <AdminDashboard />
             </ProtectedRoute>
           } 
         />

@@ -13,6 +13,8 @@ export default function Dashboard() {
       navigate('/agency/fleet');
     } else if (role === 'customer') {
       navigate('/customer/rentals');
+    } else if (role === 'admin') {
+      navigate('/admin/dashboard');
     } else {
       // If no role is found (or logged out), send to home
       navigate('/');
