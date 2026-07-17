@@ -8,5 +8,6 @@ const role = require('../middleware/role');
 router.post('/', auth, role(['agency']), vehicleController.addVehicle);
 router.get('/', vehicleController.getAllVehicles);
 router.get('/:id', vehicleController.getVehicleById);
+router.put('/:id', auth, role(['agency']), vehicleController.updateVehicle);
 
 module.exports = router;

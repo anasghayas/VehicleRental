@@ -87,3 +87,37 @@ exports.getVehicleById = async (req, res) => {
     res.status(500).json({ message: "Server error while fetching vehicle." });
   }
 };
+
+// PUT /api/vehicles/:id
+// Private access - Only the agency that owns the vehicle can edit it!
+exports.updateVehicle = async (req, res) => {
+  try {
+    const vehicle = await Vehicle.findById(req.params.id);
+
+    if (!vehicle) {
+      return res.status(404).json({ message: "Vehicle not found." });
+    }
+
+    // SECURITY CHECK: Make sure the logged-in user is the actual owner of the vehicle!
+    if (vehicle.agencyId.toString() !== req.user.id) {
+      return res.status(403).json({ message: "You do not have permission to edit this vehicle." });
+    }
+    const updatedVehicle = await Vehicle.findByIdAndUpdate(
+      req.params.id,
+      { $set: req.body },
+      { new: true, runValidators: true } 
+    );
+
+    res.status(200).json({
+      message: "Vehicle updated successfully!",
+      vehicle: updatedVehicle
+    });
+
+  } catch (error) {
+    console.error("Error updating vehicle:", error);
+    if (error.kind === 'ObjectId') {
+      return res.status(400).json({ message: "Invalid vehicle ID format." });
+    }
+    res.status(500).json({ message: "Server error while updating vehicle." });
+  }
+};
