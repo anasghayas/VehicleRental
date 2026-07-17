@@ -9,5 +9,6 @@ router.post('/', auth, role(['agency']), vehicleController.addVehicle);
 router.get('/', vehicleController.getAllVehicles);
 router.get('/:id', vehicleController.getVehicleById);
 router.put('/:id', auth, role(['agency']), vehicleController.updateVehicle);
+router.delete('/:id', auth, role(['agency']), vehicleController.deleteVehicle);
 
 module.exports = router;
