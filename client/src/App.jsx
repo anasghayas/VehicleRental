@@ -9,6 +9,7 @@ import VehicleDetails from './pages/VehicleDetails';
 import MyRentals from './pages/MyRentals';
 import AgencyBookings from './pages/AgencyBookings';
 import AdminDashboard from './pages/AdminDashboard';
+import AdminManageUsers from './pages/AdminManageUsers';
 import Navbar from './components/Navbar';
 import ProtectedRoute from './components/ProtectedRoute';
 
@@ -79,6 +80,16 @@ function App() {
           element={
             <ProtectedRoute allowedRoles={['admin']}>
               <AdminDashboard />
+            </ProtectedRoute>
+          } 
+        />
+
+        {/* Admin Only Route: Manage Users */}
+        <Route 
+          path="/admin/users" 
+          element={
+            <ProtectedRoute allowedRoles={['admin']}>
+              <AdminManageUsers />
             </ProtectedRoute>
           } 
         />
