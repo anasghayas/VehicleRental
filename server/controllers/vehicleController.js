@@ -36,6 +36,7 @@ exports.addVehicle = async (req, res) => {
 
   } catch (error) {
     console.error("Error adding vehicle:", error);
+    require('fs').appendFileSync('error.log', 'ADD VEHICLE ERROR: ' + error.stack + '\n');
     
     if (error.code === 11000) {
       return res.status(400).json({ message: "A vehicle with this registration number already exists." });

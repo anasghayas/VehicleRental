@@ -25,6 +25,11 @@ app.use('/api/vehicles', vehicleRoutes);
 app.use('/api/bookings', bookingRoutes);
 app.use('/api/admin', adminRoutes);
 
+app.use((err, req, res, next) => {
+    require('fs').appendFileSync('global_error.log', 'GLOBAL ERROR: ' + err.stack + '\n');
+    res.status(500).json({ message: "Global server error." });
+});
+
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {

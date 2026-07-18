@@ -159,7 +159,7 @@ export default function AddVehicle() {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="image">Vehicle Photo</Label>
+            <Label htmlFor="image">Vehicle Photo (Allowed: .jpg, .jpeg, .png, .webp)</Label>
             <Input type="file" id="image" name="image" accept="image/*" onChange={handleImageChange} className="cursor-pointer file:text-primary file:font-semibold" />
           </div>
         </div>

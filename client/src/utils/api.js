@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // We create an 'axios instance' and use a relative path so it works in any environment (like remote workspaces)
 const api = axios.create({
-  baseURL: '/api',
+  baseURL: import.meta.env.VITE_API_URL || '/api',
 });
 
 // Later in Phase 3, we will add a special interceptor here 
