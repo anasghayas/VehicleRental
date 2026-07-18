@@ -1,14 +1,14 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 
 export default function Dashboard() {
   const navigate = useNavigate();
+  const { user } = useAuth();
 
   useEffect(() => {
-    // Check local storage to see who is logged in
-    const role = localStorage.getItem('role');
-    
-    // Redirect them to their respective dashboard pages
+    // Redirect them to their respective dashboard pages based on JWT token payload
+    const role = user?.role;
     if (role === 'agency') {
       navigate('/agency/fleet');
     } else if (role === 'customer') {
@@ -19,7 +19,7 @@ export default function Dashboard() {
       // If no role is found (or logged out), send to home
       navigate('/');
     }
-  }, [navigate]);
+  }, [navigate, user]);
 
   return (
     <div className="flex items-center justify-center h-screen bg-background">
