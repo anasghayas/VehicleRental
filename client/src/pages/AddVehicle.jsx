@@ -62,8 +62,8 @@ export default function AddVehicle() {
   };
 
   return (
-    <div className="max-w-3xl mx-auto mt-10 p-8 bg-white rounded-2xl shadow-sm border border-gray-100">
-      <h2 className="text-3xl font-bold mb-8 text-gray-800">List a New Vehicle 🚗</h2>
+    <div className="max-w-3xl mx-auto mt-10 p-8 bg-card rounded-2xl shadow-sm border border-border">
+      <h2 className="text-3xl font-bold mb-8 text-foreground">List a New Vehicle 🚗</h2>
       
       {error && (
         <div className="mb-6 p-4 bg-red-50 text-red-600 rounded-lg text-sm border border-red-100 font-medium">

@@ -83,76 +83,76 @@ export default function VehicleDetails() {
 
   if (loading) return <LoadingSpinner text="Loading vehicle details..." fullScreen />;
   if (error) return <div className="text-center py-20 text-xl font-medium text-red-500 bg-red-50 mx-6 mt-10 rounded-xl">{error}</div>;
-  if (!vehicle) return <div className="text-center py-20 text-xl font-medium text-gray-500">Vehicle not found</div>;
+  if (!vehicle) return <div className="text-center py-20 text-xl font-medium text-muted-foreground">Vehicle not found</div>;
 
   return (
     <div className="max-w-6xl mx-auto px-6 py-12 relative">
-      <Link to="/" className="text-primary font-bold mb-8 inline-block hover:underline bg-blue-50 px-4 py-2 rounded-lg">
+      <Link to="/" className="text-primary font-bold mb-8 inline-block hover:underline bg-primary/10 px-4 py-2 rounded-lg">
         &larr; Back to browsing
       </Link>
       
-      <div className="bg-white rounded-3xl shadow-lg border border-gray-100 overflow-hidden flex flex-col md:flex-row">
+      <div className="bg-card rounded-3xl shadow-lg border border-border overflow-hidden flex flex-col md:flex-row">
         
         {/* Left Side: Beautiful Image Display */}
-        <div className="md:w-1/2 bg-gray-50 flex items-center justify-center p-8 border-r border-gray-100 relative">
+        <div className="md:w-1/2 bg-background flex items-center justify-center p-8 border-r border-border relative">
           {vehicle.imageUrl ? (
             <img src={vehicle.imageUrl} alt={vehicle.name} className="w-full h-auto object-contain rounded-2xl shadow-xl transform transition-transform hover:scale-105 duration-500" />
           ) : (
-            <div className="w-full aspect-[4/3] flex items-center justify-center text-gray-400 bg-gray-200 rounded-2xl">
+            <div className="w-full aspect-[4/3] flex items-center justify-center text-muted-foreground bg-secondary rounded-2xl">
               No Image Available
             </div>
           )}
         </div>
 
         {/* Right Side: Detailed Info */}
-        <div className="md:w-1/2 p-10 flex flex-col justify-between bg-white">
+        <div className="md:w-1/2 p-10 flex flex-col justify-between bg-card">
           <div>
-            <span className="inline-block px-4 py-1.5 bg-gray-900 text-white font-bold text-xs uppercase tracking-widest rounded-full mb-5 shadow-sm">
+            <span className="inline-block px-4 py-1.5 bg-gray-900 text-primary-foreground font-bold text-xs uppercase tracking-widest rounded-full mb-5 shadow-sm">
               {vehicle.type === '4W' ? 'Car' : 'Bike/Scooter'}
             </span>
             
-            <h1 className="text-4xl font-extrabold text-gray-900 mb-2 leading-tight">
-              {vehicle.brand} {vehicle.name} <span className="text-gray-400 font-medium text-3xl">({vehicle.modelYear})</span>
+            <h1 className="text-4xl font-extrabold text-foreground mb-2 leading-tight">
+              {vehicle.brand} {vehicle.name} <span className="text-muted-foreground font-medium text-3xl">({vehicle.modelYear})</span>
             </h1>
             
-            <p className="text-gray-600 font-medium text-lg mb-8 flex items-center gap-2">
-              📍 Available in <span className="text-gray-900 font-bold bg-gray-100 px-3 py-1 rounded-md">{vehicle.location}</span>
+            <p className="text-muted-foreground font-medium text-lg mb-8 flex items-center gap-2">
+              📍 Available in <span className="text-foreground font-bold bg-muted px-3 py-1 rounded-md">{vehicle.location}</span>
             </p>
 
-            <div className="grid grid-cols-2 gap-6 mb-8 border-y border-gray-100 py-6">
+            <div className="grid grid-cols-2 gap-6 mb-8 border-y border-border py-6">
               <div>
-                <p className="text-xs text-gray-500 uppercase font-bold tracking-wider mb-1">Fuel Type</p>
-                <p className="text-lg font-bold text-gray-900">{vehicle.fuelType}</p>
+                <p className="text-xs text-muted-foreground uppercase font-bold tracking-wider mb-1">Fuel Type</p>
+                <p className="text-lg font-bold text-foreground">{vehicle.fuelType}</p>
               </div>
               <div>
-                <p className="text-xs text-gray-500 uppercase font-bold tracking-wider mb-1">Transmission</p>
-                <p className="text-lg font-bold text-gray-900">{vehicle.transmission}</p>
+                <p className="text-xs text-muted-foreground uppercase font-bold tracking-wider mb-1">Transmission</p>
+                <p className="text-lg font-bold text-foreground">{vehicle.transmission}</p>
               </div>
               
-              <div className="col-span-2 bg-blue-50/50 p-5 rounded-2xl border border-blue-100 flex flex-col">
-                <p className="text-xs text-blue-600 uppercase font-bold tracking-widest mb-2">Verified Agency</p>
+              <div className="col-span-2 bg-primary/10/50 p-5 rounded-2xl border border-blue-100 flex flex-col">
+                <p className="text-xs text-primary uppercase font-bold tracking-widest mb-2">Verified Agency</p>
                 <p className="text-xl font-bold text-blue-950">{vehicle.agencyId?.agencyName || 'Independent Agency'}</p>
-                <p className="text-blue-800 font-medium mt-1">📞 {vehicle.agencyId?.phone || 'Contact not provided'}</p>
+                <p className="text-primary font-medium mt-1">📞 {vehicle.agencyId?.phone || 'Contact not provided'}</p>
               </div>
             </div>
           </div>
 
           <div>
-            <h3 className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-2">
-              Rental Pricing <span className="text-sm font-normal text-gray-500 bg-gray-100 px-2 py-1 rounded-md">Flexible Packages</span>
+            <h3 className="text-xl font-bold text-foreground mb-4 flex items-center gap-2">
+              Rental Pricing <span className="text-sm font-normal text-muted-foreground bg-muted px-2 py-1 rounded-md">Flexible Packages</span>
             </h3>
             
             <div className="grid grid-cols-3 gap-4 mb-8">
-              <div className="bg-white p-4 rounded-2xl border border-gray-200 text-center shadow-sm hover:border-primary hover:shadow-md transition-all cursor-default">
-                <p className="text-xs text-gray-500 font-bold uppercase mb-2">Daily</p>
+              <div className="bg-card p-4 rounded-2xl border border-border text-center shadow-sm hover:border-primary hover:shadow-md transition-all cursor-default">
+                <p className="text-xs text-muted-foreground font-bold uppercase mb-2">Daily</p>
                 <p className="text-2xl font-bold text-primary">₹{vehicle.pricePerDay}</p>
               </div>
-              <div className="bg-white p-4 rounded-2xl border border-gray-200 text-center shadow-sm hover:border-primary hover:shadow-md transition-all cursor-default">
-                <p className="text-xs text-gray-500 font-bold uppercase mb-2">Weekly</p>
+              <div className="bg-card p-4 rounded-2xl border border-border text-center shadow-sm hover:border-primary hover:shadow-md transition-all cursor-default">
+                <p className="text-xs text-muted-foreground font-bold uppercase mb-2">Weekly</p>
                 <p className="text-2xl font-bold text-primary">₹{vehicle.pricePerWeek}</p>
               </div>
-              <div className="bg-white p-4 rounded-2xl border border-gray-200 text-center shadow-sm hover:border-primary hover:shadow-md transition-all cursor-default">
-                <p className="text-xs text-gray-500 font-bold uppercase mb-2">Monthly</p>
+              <div className="bg-card p-4 rounded-2xl border border-border text-center shadow-sm hover:border-primary hover:shadow-md transition-all cursor-default">
+                <p className="text-xs text-muted-foreground font-bold uppercase mb-2">Monthly</p>
                 <p className="text-2xl font-bold text-primary">₹{vehicle.pricePerMonth}</p>
               </div>
             </div>
@@ -163,7 +163,7 @@ export default function VehicleDetails() {
             >
               Proceed to Book
             </Button>
-            <p className="text-center text-sm text-gray-400 mt-4 font-medium flex items-center justify-center gap-1">
+            <p className="text-center text-sm text-muted-foreground mt-4 font-medium flex items-center justify-center gap-1">
               🔒 Payment gateway coming in Phase 6
             </p>
           </div>
@@ -173,16 +173,16 @@ export default function VehicleDetails() {
       {/* Booking Modal Overlay */}
       {isModalOpen && (
         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-3xl p-8 max-w-md w-full shadow-2xl relative">
+          <div className="bg-card rounded-3xl p-8 max-w-md w-full shadow-2xl relative">
             
             <button 
               onClick={() => setIsModalOpen(false)}
-              className="absolute top-4 right-4 text-gray-400 hover:text-gray-900 text-2xl font-bold"
+              className="absolute top-4 right-4 text-muted-foreground hover:text-foreground text-2xl font-bold"
             >
               &times;
             </button>
             
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">Complete Your Booking</h2>
+            <h2 className="text-2xl font-bold text-foreground mb-6">Complete Your Booking</h2>
             
             {bookingError && (
               <div className="mb-6 p-4 bg-red-50 text-red-600 rounded-xl text-sm font-medium border border-red-100">
@@ -217,13 +217,13 @@ export default function VehicleDetails() {
                 />
               </div>
 
-              <div className="bg-gray-50 p-4 rounded-xl border border-gray-200">
+              <div className="bg-background p-4 rounded-xl border border-border">
                 <div className="flex justify-between items-center mb-2">
-                  <span className="text-gray-600 font-medium">Rate:</span>
+                  <span className="text-muted-foreground font-medium">Rate:</span>
                   <span className="font-bold">₹{vehicle.pricePerDay} / day</span>
                 </div>
                 <div className="flex justify-between items-center text-xl">
-                  <span className="text-gray-900 font-bold">Total Price:</span>
+                  <span className="text-foreground font-bold">Total Price:</span>
                   <span className="font-bold text-primary">₹{totalPrice}</span>
                 </div>
               </div>

@@ -47,12 +47,12 @@ export default function AdminManageUsers() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-      <h1 className="text-3xl font-bold text-gray-900 mb-8">Manage Users 👥</h1>
+      <h1 className="text-3xl font-bold text-foreground mb-8">Manage Users 👥</h1>
       
-      <div className="bg-white shadow-sm border border-gray-200 rounded-2xl overflow-hidden">
+      <div className="bg-card shadow-sm border border-border rounded-2xl overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-sm text-left">
-            <thead className="bg-gray-50 text-gray-600 font-medium border-b border-gray-200">
+            <thead className="bg-background text-muted-foreground font-medium border-b border-border">
               <tr>
                 <th className="px-6 py-4">Name / Agency Name</th>
                 <th className="px-6 py-4">Email</th>
@@ -63,21 +63,21 @@ export default function AdminManageUsers() {
             </thead>
             <tbody className="divide-y divide-gray-200">
               {users.map(user => (
-                <tr key={user._id} className="hover:bg-gray-50 transition-colors">
-                  <td className="px-6 py-4 font-medium text-gray-900">
+                <tr key={user._id} className="hover:bg-background transition-colors">
+                  <td className="px-6 py-4 font-medium text-foreground">
                     {user.role === 'agency' ? user.agencyName : user.name}
                   </td>
-                  <td className="px-6 py-4 text-gray-600">{user.email}</td>
+                  <td className="px-6 py-4 text-muted-foreground">{user.email}</td>
                   <td className="px-6 py-4">
                     <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium capitalize ${
-                      user.role === 'agency' ? 'bg-purple-100 text-purple-800' : 'bg-blue-100 text-blue-800'
+                      user.role === 'agency' ? 'bg-purple-100 text-purple-800' : 'bg-primary/20 text-primary'
                     }`}>
                       {user.role}
                     </span>
                   </td>
                   <td className="px-6 py-4">
                     {user.role === 'customer' ? (
-                      <span className="text-gray-400 italic">N/A</span>
+                      <span className="text-muted-foreground italic">N/A</span>
                     ) : user.isApproved ? (
                       <span className="text-green-600 font-medium">Approved ✅</span>
                     ) : (
@@ -99,7 +99,7 @@ export default function AdminManageUsers() {
               ))}
               {users.length === 0 && (
                 <tr>
-                  <td colSpan="5" className="px-6 py-8 text-center text-gray-500">
+                  <td colSpan="5" className="px-6 py-8 text-center text-muted-foreground">
                     No users found.
                   </td>
                 </tr>

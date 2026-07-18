@@ -22,8 +22,8 @@ export default function Dashboard() {
   }, [navigate]);
 
   return (
-    <div className="flex items-center justify-center h-screen bg-gray-50">
-      <div className="text-xl text-gray-500 font-medium">Redirecting to your dashboard...</div>
+    <div className="flex items-center justify-center h-screen bg-background">
+      <div className="text-xl text-muted-foreground font-medium">Redirecting to your dashboard...</div>
     </div>
   );
 }

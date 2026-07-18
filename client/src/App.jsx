@@ -13,16 +13,19 @@ import AdminManageUsers from './pages/AdminManageUsers';
 import AdminManageVehicles from './pages/AdminManageVehicles';
 import AdminAllBookings from './pages/AdminAllBookings';
 import Navbar from './components/Navbar';
+import Footer from './components/Footer';
 import ProtectedRoute from './components/ProtectedRoute';
 import { Toaster } from 'sonner';
 
 function App() {
   return (
     <Router>
-      <Navbar />
-      <Toaster position="top-right" richColors />
-      <Routes>
-        {/* Define which component loads for which URL */}
+      <div className="flex flex-col min-h-screen bg-background text-foreground">
+        <Navbar />
+        <Toaster position="top-right" richColors theme="dark" />
+        <main className="flex-grow">
+          <Routes>
+            {/* Define which component loads for which URL */}
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
@@ -118,7 +121,10 @@ function App() {
           } 
         />
         
-      </Routes>
+          </Routes>
+        </main>
+        <Footer />
+      </div>
     </Router>
   );
 }

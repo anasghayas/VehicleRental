@@ -27,10 +27,10 @@ export default function AdminAllBookings() {
   const getStatusBadge = (status) => {
     switch (status) {
       case 'pending': return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800">Pending</span>;
-      case 'approved': return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">Approved</span>;
+      case 'approved': return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-primary/20 text-primary">Approved</span>;
       case 'rejected': return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">Rejected</span>;
       case 'completed': return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">Completed</span>;
-      default: return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800 capitalize">{status}</span>;
+      default: return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-muted text-foreground capitalize">{status}</span>;
     }
   };
 
@@ -39,12 +39,12 @@ export default function AdminAllBookings() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
-      <h1 className="text-3xl font-bold text-gray-900 mb-8">All Platform Bookings 📜</h1>
+      <h1 className="text-3xl font-bold text-foreground mb-8">All Platform Bookings 📜</h1>
       
-      <div className="bg-white shadow-sm border border-gray-200 rounded-2xl overflow-hidden">
+      <div className="bg-card shadow-sm border border-border rounded-2xl overflow-hidden">
         <div className="overflow-x-auto">
           <table className="w-full text-sm text-left">
-            <thead className="bg-gray-50 text-gray-600 font-medium border-b border-gray-200">
+            <thead className="bg-background text-muted-foreground font-medium border-b border-border">
               <tr>
                 <th className="px-6 py-4">Booking ID</th>
                 <th className="px-6 py-4">Vehicle</th>
@@ -57,43 +57,43 @@ export default function AdminAllBookings() {
             </thead>
             <tbody className="divide-y divide-gray-200">
               {bookings.map(booking => (
-                <tr key={booking._id} className="hover:bg-gray-50 transition-colors">
-                  <td className="px-6 py-4 text-xs font-mono text-gray-500">
+                <tr key={booking._id} className="hover:bg-background transition-colors">
+                  <td className="px-6 py-4 text-xs font-mono text-muted-foreground">
                     {booking._id.substring(18)}
                   </td>
                   <td className="px-6 py-4">
                     {booking.vehicleId ? (
                       <div>
-                        <div className="font-bold text-gray-900">{booking.vehicleId.brand} {booking.vehicleId.name}</div>
-                        <div className="text-gray-500 text-xs">{booking.vehicleId.vehicleNumber}</div>
+                        <div className="font-bold text-foreground">{booking.vehicleId.brand} {booking.vehicleId.name}</div>
+                        <div className="text-muted-foreground text-xs">{booking.vehicleId.vehicleNumber}</div>
                       </div>
                     ) : (
-                      <span className="text-gray-400 italic">Vehicle Deleted</span>
+                      <span className="text-muted-foreground italic">Vehicle Deleted</span>
                     )}
                   </td>
                   <td className="px-6 py-4">
                     {booking.customerId ? (
                       <div>
-                        <div className="font-medium text-gray-900">{booking.customerId.name}</div>
-                        <div className="text-gray-500 text-xs">{booking.customerId.email}</div>
+                        <div className="font-medium text-foreground">{booking.customerId.name}</div>
+                        <div className="text-muted-foreground text-xs">{booking.customerId.email}</div>
                       </div>
                     ) : (
-                      <span className="text-gray-400 italic">User Deleted</span>
+                      <span className="text-muted-foreground italic">User Deleted</span>
                     )}
                   </td>
                   <td className="px-6 py-4">
                     {booking.agencyId ? (
                       <div>
-                        <div className="font-medium text-gray-900">{booking.agencyId.agencyName}</div>
-                        <div className="text-gray-500 text-xs">{booking.agencyId.email}</div>
+                        <div className="font-medium text-foreground">{booking.agencyId.agencyName}</div>
+                        <div className="text-muted-foreground text-xs">{booking.agencyId.email}</div>
                       </div>
                     ) : (
-                      <span className="text-gray-400 italic">Agency Deleted</span>
+                      <span className="text-muted-foreground italic">Agency Deleted</span>
                     )}
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-gray-900">{format(new Date(booking.startDate), 'MMM dd, yyyy')}</div>
-                    <div className="text-gray-500 text-xs">to {format(new Date(booking.endDate), 'MMM dd, yyyy')}</div>
+                    <div className="text-foreground">{format(new Date(booking.startDate), 'MMM dd, yyyy')}</div>
+                    <div className="text-muted-foreground text-xs">to {format(new Date(booking.endDate), 'MMM dd, yyyy')}</div>
                   </td>
                   <td className="px-6 py-4">
                     <span className="font-bold text-green-600">₹{booking.totalPrice}</span>
@@ -105,7 +105,7 @@ export default function AdminAllBookings() {
               ))}
               {bookings.length === 0 && (
                 <tr>
-                  <td colSpan="7" className="px-6 py-8 text-center text-gray-500">
+                  <td colSpan="7" className="px-6 py-8 text-center text-muted-foreground">
                     No bookings found on the platform yet.
                   </td>
                 </tr>

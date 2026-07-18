@@ -47,31 +47,31 @@ export default function AgencyBookings() {
     switch (status) {
       case 'approved': return 'bg-green-100 text-green-800 border-green-200';
       case 'rejected': return 'bg-red-100 text-red-800 border-red-200';
-      case 'completed': return 'bg-blue-100 text-blue-800 border-blue-200';
-      case 'cancelled': return 'bg-gray-100 text-gray-800 border-gray-200';
+      case 'completed': return 'bg-primary/20 text-primary border-blue-200';
+      case 'cancelled': return 'bg-muted text-foreground border-border';
       default: return 'bg-yellow-100 text-yellow-800 border-yellow-200'; // pending
     }
   };
 
-  if (loading) return <div className="text-center mt-20 text-gray-500 font-medium">Loading requests...</div>;
+  if (loading) return <div className="text-center mt-20 text-muted-foreground font-medium">Loading requests...</div>;
   if (error) return <div className="text-center text-red-500 mt-20 bg-red-50 p-4 rounded-lg inline-block">{error}</div>;
 
   return (
     <div className="max-w-6xl mx-auto mt-10 p-6">
-      <h2 className="text-3xl font-bold text-gray-900 mb-8">Manage Booking Requests 📥</h2>
+      <h2 className="text-3xl font-bold text-foreground mb-8">Manage Booking Requests 📥</h2>
 
       {bookings.length === 0 ? (
-        <div className="text-center p-12 bg-white rounded-2xl border border-gray-100 shadow-sm">
-          <p className="text-gray-500 text-lg">No booking requests found for your vehicles.</p>
+        <div className="text-center p-12 bg-card rounded-2xl border border-border shadow-sm">
+          <p className="text-muted-foreground text-lg">No booking requests found for your vehicles.</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {bookings.map((booking) => (
-            <div key={booking._id} className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 flex flex-col justify-between">
+            <div key={booking._id} className="bg-card rounded-2xl shadow-sm border border-border p-6 flex flex-col justify-between">
               
               <div>
                 <div className="flex justify-between items-start mb-4">
-                  <h3 className="text-xl font-bold text-gray-900">
+                  <h3 className="text-xl font-bold text-foreground">
                     {booking.vehicleId?.brand} {booking.vehicleId?.name}
                   </h3>
                   <span className={`px-3 py-1 text-xs font-bold uppercase tracking-wider rounded-full border ${getStatusColor(booking.status)}`}>
@@ -79,22 +79,22 @@ export default function AgencyBookings() {
                   </span>
                 </div>
                 
-                <div className="bg-gray-50 p-4 rounded-xl border border-gray-100 mb-4">
-                  <p className="text-xs text-gray-500 font-bold uppercase tracking-wider mb-2">Customer Details</p>
-                  <p className="font-bold text-gray-900">{booking.customerId?.name || 'Unknown Customer'}</p>
-                  <p className="text-sm text-gray-600 font-medium mt-1">📧 {booking.customerId?.email}</p>
-                  <p className="text-sm text-gray-600 font-medium mt-1">📞 {booking.customerId?.phone}</p>
+                <div className="bg-background p-4 rounded-xl border border-border mb-4">
+                  <p className="text-xs text-muted-foreground font-bold uppercase tracking-wider mb-2">Customer Details</p>
+                  <p className="font-bold text-foreground">{booking.customerId?.name || 'Unknown Customer'}</p>
+                  <p className="text-sm text-muted-foreground font-medium mt-1">📧 {booking.customerId?.email}</p>
+                  <p className="text-sm text-muted-foreground font-medium mt-1">📞 {booking.customerId?.phone}</p>
                 </div>
 
-                <div className="flex justify-between items-center bg-blue-50/50 p-4 rounded-xl border border-blue-100 mb-6">
+                <div className="flex justify-between items-center bg-primary/10/50 p-4 rounded-xl border border-blue-100 mb-6">
                   <div>
-                    <p className="text-xs text-blue-600 font-bold uppercase tracking-wider mb-1">Duration</p>
+                    <p className="text-xs text-primary font-bold uppercase tracking-wider mb-1">Duration</p>
                     <p className="text-sm font-medium text-blue-950">
                       {new Date(booking.startDate).toLocaleDateString()} - {new Date(booking.endDate).toLocaleDateString()}
                     </p>
                   </div>
                   <div className="text-right">
-                    <p className="text-xs text-blue-600 font-bold uppercase tracking-wider mb-1">Expected Earnings</p>
+                    <p className="text-xs text-primary font-bold uppercase tracking-wider mb-1">Expected Earnings</p>
                     <p className="text-lg font-bold text-primary">₹{booking.totalPrice}</p>
                   </div>
                 </div>
@@ -102,9 +102,9 @@ export default function AgencyBookings() {
 
               {/* Action Buttons */}
               {booking.status === 'pending' && (
-                <div className="flex gap-4 border-t border-gray-100 pt-4 mt-2">
+                <div className="flex gap-4 border-t border-border pt-4 mt-2">
                   <Button 
-                    className="flex-1 bg-green-600 hover:bg-green-700 text-white font-bold h-12 rounded-xl shadow-sm transition-all"
+                    className="flex-1 bg-green-600 hover:bg-green-700 text-primary-foreground font-bold h-12 rounded-xl shadow-sm transition-all"
                     onClick={() => handleStatusUpdate(booking._id, 'approved')}
                     disabled={actionLoading === booking._id}
                   >
@@ -122,10 +122,10 @@ export default function AgencyBookings() {
               )}
 
               {booking.status === 'approved' && (
-                <div className="border-t border-gray-100 pt-4 mt-2">
+                <div className="border-t border-border pt-4 mt-2">
                    <Button 
                     variant="outline"
-                    className="w-full text-blue-600 border-blue-200 hover:bg-blue-50 hover:text-blue-700 font-bold h-12 rounded-xl transition-all"
+                    className="w-full text-primary border-blue-200 hover:bg-primary/10 hover:text-primary font-bold h-12 rounded-xl transition-all"
                     onClick={() => handleStatusUpdate(booking._id, 'completed')}
                     disabled={actionLoading === booking._id}
                   >
