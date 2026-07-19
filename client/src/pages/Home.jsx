@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import api from '../utils/api';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
@@ -12,6 +13,8 @@ export default function Home() {
   
   const [locationFilter, setLocationFilter] = useState('');
   const [typeFilter, setTypeFilter] = useState('');
+  const { user } = useAuth();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchVehicles = async () => {
@@ -57,21 +60,29 @@ export default function Home() {
               Rent premium cars and bikes from top verified agencies near you. Quick, secure, and hassle-free booking.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-              <Button size="lg" className="text-lg px-8 py-6 rounded-full font-bold shadow-lg shadow-primary/25 hover:shadow-primary/40 hover:-translate-y-1 transition-all">
-                Browse Vehicles
-              </Button>
-              <Button size="lg" variant="outline" className="text-lg px-8 py-6 rounded-full font-bold hover:bg-card">
-                List Your Fleet
-              </Button>
+              {user?.role === 'agency' ? (
+                <Button size="lg" className="text-lg px-8 py-6 rounded-full font-bold shadow-lg shadow-primary/25 hover:shadow-primary/40 hover:-translate-y-1 transition-all" onClick={() => navigate('/agency/fleet')}>
+                  Manage My Fleet
+                </Button>
+              ) : (
+                <Button size="lg" className="text-lg px-8 py-6 rounded-full font-bold shadow-lg shadow-primary/25 hover:shadow-primary/40 hover:-translate-y-1 transition-all" onClick={() => window.scrollTo({ top: 600, behavior: 'smooth' })}>
+                  Browse Vehicles
+                </Button>
+              )}
+              
+              {!user && (
+                <Button size="lg" variant="outline" className="text-lg px-8 py-6 rounded-full font-bold hover:bg-card" onClick={() => navigate('/register')}>
+                  List Your Fleet
+                </Button>
+              )}
             </div>
           </div>
           
           <div className="hidden lg:block lg:w-1/2 relative mt-16 lg:mt-0">
             {/* Hero Image / Composition */}
             <div className="relative rounded-2xl overflow-hidden shadow-2xl border border-border bg-muted aspect-[4/3] group">
-              <div className="absolute inset-0 bg-gradient-to-tr from-card/80 to-transparent z-10"></div>
-              {/* Fallback pattern if we don't have an image, but let's use a nice gradient */}
-              <div className="absolute inset-0 bg-gradient-to-br from-secondary via-background to-card group-hover:scale-105 transition-transform duration-700"></div>
+              <img src="/hero.png" alt="Premium Fleet" className="absolute inset-0 w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent z-10"></div>
               
               <div className="absolute bottom-8 left-8 z-20">
                 <div className="bg-background/80 backdrop-blur-md p-4 rounded-xl border border-border shadow-xl">
