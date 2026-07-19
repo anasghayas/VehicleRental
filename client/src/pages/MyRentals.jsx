@@ -73,7 +73,7 @@ export default function MyRentals() {
                       {booking.vehicleId?.brand} {booking.vehicleId?.name}
                     </h3>
                     <span className={`px-4 py-1.5 text-xs font-bold uppercase tracking-widest rounded-full border shadow-sm ${getStatusColor(booking.status)}`}>
-                      {booking.status}
+                      {booking.status === 'pending' ? 'Pending (Agency Approval)' : booking.status}
                     </span>
                   </div>
                   <p className="text-sm text-muted-foreground font-medium mb-4 flex gap-4 bg-background inline-block px-3 py-1.5 rounded-lg border border-border">
@@ -88,9 +88,9 @@ export default function MyRentals() {
                     <p className="text-xs text-muted-foreground font-bold uppercase tracking-wider mb-1">Total Due</p>
                     <p className="text-2xl font-bold text-primary">₹{booking.totalPrice}</p>
                   </div>
-                  <div className="text-left sm:text-right mt-4 sm:mt-0 bg-primary/10 px-4 py-2 rounded-xl border border-blue-100">
+                  <div className="text-left sm:text-right mt-4 sm:mt-0 bg-muted px-4 py-2 rounded-xl border border-border">
                     <p className="text-xs text-primary font-bold uppercase tracking-wider mb-1">Agency Contact</p>
-                    <p className="font-bold text-blue-950">{booking.agencyId?.agencyName || 'Unknown Agency'}</p>
+                    <p className="font-bold text-foreground">{booking.agencyId?.agencyName || 'Unknown Agency'}</p>
                     <p className="text-sm text-primary font-medium">📞 {booking.agencyId?.phone}</p>
                   </div>
                 </div>

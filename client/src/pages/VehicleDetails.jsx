@@ -107,7 +107,7 @@ export default function VehicleDetails() {
         {/* Right Side: Detailed Info */}
         <div className="md:w-1/2 p-10 flex flex-col justify-between bg-card">
           <div>
-            <span className="inline-block px-4 py-1.5 bg-gray-900 text-primary-foreground font-bold text-xs uppercase tracking-widest rounded-full mb-5 shadow-sm">
+            <span className="inline-block px-4 py-1.5 bg-muted text-foreground border border-border font-bold text-xs uppercase tracking-widest rounded-full mb-5 shadow-sm">
               {vehicle.type === '4W' ? 'Car' : 'Bike/Scooter'}
             </span>
             
@@ -129,9 +129,9 @@ export default function VehicleDetails() {
                 <p className="text-lg font-bold text-foreground">{vehicle.transmission}</p>
               </div>
               
-              <div className="col-span-2 bg-primary/10/50 p-5 rounded-2xl border border-blue-100 flex flex-col">
+              <div className="col-span-2 bg-muted p-5 rounded-2xl border border-border flex flex-col">
                 <p className="text-xs text-primary uppercase font-bold tracking-widest mb-2">Verified Agency</p>
-                <p className="text-xl font-bold text-blue-950">{vehicle.agencyId?.agencyName || 'Independent Agency'}</p>
+                <p className="text-xl font-bold text-foreground">{vehicle.agencyId?.agencyName || 'Independent Agency'}</p>
                 <p className="text-primary font-medium mt-1">📞 {vehicle.agencyId?.phone || 'Contact not provided'}</p>
               </div>
             </div>
