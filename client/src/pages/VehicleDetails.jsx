@@ -171,9 +171,6 @@ export default function VehicleDetails() {
             >
               Proceed to Book
             </Button>
-            <p className="text-center text-sm text-muted-foreground mt-4 font-medium flex items-center justify-center gap-1">
-              🔒 Payment gateway coming in Phase 6
-            </p>
           </div>
         </div>
       </div>
