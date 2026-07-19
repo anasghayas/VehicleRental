@@ -86,10 +86,10 @@ export default function AgencyBookings() {
                   <p className="text-sm text-muted-foreground font-medium mt-1">📞 {booking.customerId?.phone}</p>
                 </div>
 
-                <div className="flex justify-between items-center bg-primary/10/50 p-4 rounded-xl border border-blue-100 mb-6">
+                <div className="flex justify-between items-center bg-muted p-4 rounded-xl border border-border mb-6">
                   <div>
                     <p className="text-xs text-primary font-bold uppercase tracking-wider mb-1">Duration</p>
-                    <p className="text-sm font-medium text-blue-950">
+                    <p className="text-sm font-medium text-foreground">
                       {new Date(booking.startDate).toLocaleDateString()} - {new Date(booking.endDate).toLocaleDateString()}
                     </p>
                   </div>
