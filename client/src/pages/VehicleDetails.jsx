@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
 import api from '../utils/api';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
@@ -10,6 +11,7 @@ import LoadingSpinner from '../components/LoadingSpinner';
 export default function VehicleDetails() {
   const { id } = useParams();
   const navigate = useNavigate();
+  const { user } = useAuth();
   const [vehicle, setVehicle] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -158,7 +160,13 @@ export default function VehicleDetails() {
             </div>
 
             <Button 
-              onClick={() => setIsModalOpen(true)}
+              onClick={() => {
+                if (!user) {
+                  navigate('/login');
+                } else {
+                  setIsModalOpen(true);
+                }
+              }}
               className="w-full h-16 text-xl font-bold shadow-lg hover:shadow-xl hover:scale-[1.02] transition-all bg-primary hover:bg-primary/90 text-primary-foreground rounded-2xl"
             >
               Proceed to Book
