@@ -5,7 +5,4 @@ const api = axios.create({
   baseURL: import.meta.env.VITE_API_URL || '/api',
 });
 
-// Later in Phase 3, we will add a special interceptor here 
-// to automatically attach the JWT token to every request!
-
 export default api;
